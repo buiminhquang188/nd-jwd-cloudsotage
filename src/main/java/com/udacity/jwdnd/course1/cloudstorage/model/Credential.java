@@ -1,14 +1,14 @@
-package com.udacity.jwdnd.course1.cloudstorage.entity;
+package com.udacity.jwdnd.course1.cloudstorage.model;
 
-public class CredentialEntity {
+public class Credential {
     private String id;
     private String url;
     private String username;
     private String key;
     private String password;
-    private UserEntity user;
+    private User user;
 
-    public CredentialEntity(String id, String url, String username, String key, String password, UserEntity user) {
+    public Credential(String id, String url, String username, String key, String password, User user) {
         this.id = id;
         this.url = url;
         this.username = username;
@@ -57,11 +57,11 @@ public class CredentialEntity {
         this.password = password;
     }
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }
