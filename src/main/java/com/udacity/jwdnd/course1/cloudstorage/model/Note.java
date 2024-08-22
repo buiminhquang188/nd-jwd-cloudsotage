@@ -1,12 +1,12 @@
-package com.udacity.jwdnd.course1.cloudstorage.entity;
+package com.udacity.jwdnd.course1.cloudstorage.model;
 
-public class NoteEntity {
+public class Note {
     private Integer id;
     private String noteTitle;
     private String noteDescription;
-    private UserEntity user;
+    private User user;
 
-    public NoteEntity(Integer id, String noteTitle, String noteDescription, UserEntity user) {
+    public Note(Integer id, String noteTitle, String noteDescription, User user) {
         this.id = id;
         this.noteTitle = noteTitle;
         this.noteDescription = noteDescription;
@@ -37,11 +37,11 @@ public class NoteEntity {
         this.noteDescription = noteDescription;
     }
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }

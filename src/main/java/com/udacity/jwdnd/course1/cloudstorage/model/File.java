@@ -1,16 +1,16 @@
-package com.udacity.jwdnd.course1.cloudstorage.entity;
+package com.udacity.jwdnd.course1.cloudstorage.model;
 
 import java.sql.Blob;
 
-public class FileEntity {
+public class File {
     private Integer id;
     private String filename;
     private String contentType;
     private String fileSize;
-    private UserEntity user;
+    private User user;
     private Blob fileData;
 
-    public FileEntity(Integer id, String filename, String contentType, String fileSize, UserEntity user, Blob fileData) {
+    public File(Integer id, String filename, String contentType, String fileSize, User user, Blob fileData) {
         this.id = id;
         this.filename = filename;
         this.contentType = contentType;
@@ -51,11 +51,11 @@ public class FileEntity {
         this.fileSize = fileSize;
     }
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

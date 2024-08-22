@@ -1,6 +1,6 @@
-package com.udacity.jwdnd.course1.cloudstorage.entity;
+package com.udacity.jwdnd.course1.cloudstorage.model;
 
-public class UserEntity {
+public class User {
     private Integer id;
     private String username;
     private String salt;
@@ -8,7 +8,7 @@ public class UserEntity {
     private String firstName;
     private String lastName;
 
-    public UserEntity(Integer id, String username, String salt, String password, String firstName, String lastName) {
+    public User(Integer id, String username, String salt, String password, String firstName, String lastName) {
         this.id = id;
         this.username = username;
         this.salt = salt;
