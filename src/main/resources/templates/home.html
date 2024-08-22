@@ -63,7 +63,10 @@
                         <tr th:each="file : ${files}" th:object="${file}">
                             <td>
                                 <a target="_blank" class="btn btn-success">View</a>
-                                <a class="btn btn-danger">Delete</a>
+                                <form class="d-inline" action="#" th:action="@{/upload/{id}(id=*{id})}"
+                                      th:method="DELETE">
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
                             </td>
                             <th scope="row" th:text="*{fileName}"></th>
                         </tr>
