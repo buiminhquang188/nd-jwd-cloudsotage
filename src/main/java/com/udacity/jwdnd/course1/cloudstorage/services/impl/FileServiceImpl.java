@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.services.impl;
 
+import com.udacity.jwdnd.course1.cloudstorage.dto.Response;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.FileMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
@@ -33,5 +34,34 @@ public class FileServiceImpl implements FileService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public File getFile(Integer fileId, Integer userId) {
+        return this.fileMapper.getFile(fileId, userId);
+    }
+
+    @Override
+    public Response delete(Integer fileId, Integer userId) {
+        File file = this.getFile(fileId, 2);
+        if (file == null) {
+            return new Response(
+                    "File not found, please try again with other file",
+                    false
+            );
+        }
+
+        int resultIndex = this.fileMapper.delete(fileId);
+        if (resultIndex < 0) {
+            return new Response(
+                    "There was an error when deleting file, please try again",
+                    false
+            );
+        }
+
+        return new Response(
+                "Delete Successfully",
+                true
+        );
     }
 }
