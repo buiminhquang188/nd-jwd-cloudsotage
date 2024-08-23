@@ -5,11 +5,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@RequestMapping("/upload")
-public interface UploadController {
-    @PostMapping
+import javax.servlet.http.HttpServletResponse;
+
+@RequestMapping
+public interface FileController {
+    @PostMapping("/upload")
     String upload(@RequestParam("fileUpload") MultipartFile multipartFile, RedirectAttributes redirectAttributes, Authentication authentication);
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/upload/{id}")
     String remove(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes, Authentication authentication);
+
+    @GetMapping("/download/{id}")
+    String download(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes, Authentication authentication, HttpServletResponse response);
 }

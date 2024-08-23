@@ -1,6 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.services.impl;
 
 import com.udacity.jwdnd.course1.cloudstorage.dto.Response;
+import com.udacity.jwdnd.course1.cloudstorage.dto.ResponseDownload;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.FileMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
@@ -43,7 +44,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public Response delete(Integer fileId, Integer userId) {
-        File file = this.getFile(fileId, 2);
+        File file = this.getFile(fileId, userId);
         if (file == null) {
             return new Response(
                     "File not found, please try again with other file",
@@ -62,6 +63,24 @@ public class FileServiceImpl implements FileService {
         return new Response(
                 "Delete Successfully",
                 true
+        );
+    }
+
+    @Override
+    public ResponseDownload<File> download(Integer fileId, Integer userId) {
+        File file = this.getFile(fileId, userId);
+        if (file == null) {
+            return new ResponseDownload<>(
+                    "File not found, please try again with other file",
+                    false,
+                    null
+            );
+        }
+
+        return new ResponseDownload<>(
+                "Download Successfully",
+                true,
+                file
         );
     }
 }
