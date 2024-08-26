@@ -18,16 +18,35 @@
     <div id="contentDiv" style="clear: right;">
         <nav style="clear: right;">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link active" id="nav-files-tab" data-toggle="tab" href="#nav-files" role="tab"
-                   aria-controls="nav-files" aria-selected="true">Files</a>
-                <a class="nav-item nav-link" id="nav-notes-tab" data-toggle="tab" href="#nav-notes" role="tab"
-                   aria-controls="nav-notes" aria-selected="false">Notes</a>
-                <a class="nav-item nav-link" id="nav-credentials-tab" data-toggle="tab" href="#nav-credentials"
-                   role="tab" aria-controls="nav-credentials" aria-selected="false">Credentials</a>
+                <a th:classappend="${tab == T(com.udacity.jwdnd.course1.cloudstorage.enums.TABS).FILES ? 'active' : null}"
+                   class="nav-item nav-link" id="nav-files-tab"
+                   data-toggle="tab"
+                   href="#nav-files"
+                   role="tab"
+                   aria-controls="nav-files"
+                   th:aria-selected="${tab == T(com.udacity.jwdnd.course1.cloudstorage.enums.TABS).FILES}">
+                    Files
+                </a>
+                <a th:classappend="${tab == T(com.udacity.jwdnd.course1.cloudstorage.enums.TABS).NOTES ? 'active' : null}"
+                   class="nav-item nav-link" id="nav-notes-tab" data-toggle="tab" href="#nav-notes" role="tab"
+                   aria-controls="nav-notes"
+                   th:aria-selected="${tab == T(com.udacity.jwdnd.course1.cloudstorage.enums.TABS).NOTES}">
+                    Notes
+                </a>
+                <a th:classappend="${tab == T(com.udacity.jwdnd.course1.cloudstorage.enums.TABS).CREDENTIALS ? 'active' : null}"
+                   class="nav-item nav-link" id="nav-credentials-tab" data-toggle="tab" href="#nav-credentials"
+                   role="tab" aria-controls="nav-credentials"
+                   th:aria-selected="${tab == T(com.udacity.jwdnd.course1.cloudstorage.enums.TABS).CREDENTIALS}">
+                    Credentials
+                </a>
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
+            <div class="tab-pane fade show"
+                 th:classappend="${tab == T(com.udacity.jwdnd.course1.cloudstorage.enums.TABS).FILES ? 'active' : null}"
+                 id="nav-files"
+                 role="tabpanel"
+                 aria-labelledby="nav-files-tab">
                 <form action="#" th:action="@{/upload}" enctype="multipart/form-data" method="POST">
                     <div class="container">
                         <div class="row" style="margin: 1em;">
@@ -62,7 +81,8 @@
                         <tbody>
                         <tr th:each="file : ${files}" th:object="${file}">
                             <td>
-                                <a target="_blank" th:href="@{/download/{id}(id=*{id})}" class="btn btn-success">View</a>
+                                <a target="_blank" th:href="@{/download/{id}(id=*{id})}"
+                                   class="btn btn-success">View</a>
                                 <form class="d-inline" action="#" th:action="@{/upload/{id}(id=*{id})}"
                                       th:method="DELETE">
                                     <button class="btn btn-danger">Delete</button>
@@ -74,9 +94,11 @@
                     </table>
                 </div>
             </div>
-            <div class="tab-pane fade" id="nav-notes" role="tabpanel" aria-labelledby="nav-notes-tab">
+            <div class="tab-pane fade show"
+                 th:classappend="${tab == T(com.udacity.jwdnd.course1.cloudstorage.enums.TABS).NOTES ? 'active' : null}"
+                 id="nav-notes" role="tabpanel" aria-labelledby="nav-notes-tab">
                 <button style="margin: 0.25em;" type="button" class="btn btn-info float-right"
-                        onclick="showNoteModal()">
+                        onclick="showAddNoteModal()">
                     + Add a New Note
                 </button>
 
@@ -90,55 +112,28 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr th:each="note : ${notes}" th:object="${note}">
                             <td>
-                                <button type="button" class="btn btn-success">Edit</button>
+                                <button th:data-id="*{id}" type="button"
+                                        class="btn edit-button btn-success">
+                                    Edit
+                                </button>
                                 <a class="btn btn-danger">Delete</a>
                             </td>
-                            <th scope="row">Example Note Title</th>
-                            <td>Example Note Description</td>
+                            <th scope="row" th:text="*{noteTitle}"></th>
+                            <td th:text="*{noteDescription}"></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="noteModalLabel">Note</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="#" method="POST">
-                                    <input type="hidden" name="noteId" id="note-id">
-                                    <div class="form-group">
-                                        <label for="note-title" class="col-form-label">Title</label>
-                                        <input type="text" name="noteTitle" class="form-control" id="note-title"
-                                               maxlength="20" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="note-description" class="col-form-label">Description</label>
-                                        <textarea class="form-control" name="noteDescription" id="note-description"
-                                                  rows="5" maxlength="1000" required></textarea>
-                                    </div>
-                                    <button id="noteSubmit" type="submit" class="d-none"></button>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" onclick="$('#noteSubmit').click();">Save
-                                    changes
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div th:replace="fragments/note-modal"></div>
             </div>
-            <div class="tab-pane fade" id="nav-credentials" role="tabpanel" aria-labelledby="nav-credentials-tab">
+            <div class="tab-pane fade show"
+                 th:classappend="${tab == T(com.udacity.jwdnd.course1.cloudstorage.enums.TABS).CREDENTIALS ? 'active' : null}"
+                 id="nav-credentials"
+                 role="tabpanel"
+                 aria-labelledby="nav-credentials-tab">
                 <button style="margin: 0.25em;" type="button" class="btn btn-info float-right"
                         onclick="showCredentialModal()">
                     + Add a New Credential
@@ -220,10 +215,11 @@
 <!--For opening the note modal-->
 <script type="text/javascript">
     // For opening the note modal
-    function showNoteModal(noteId, noteTitle, noteDescription) {
-        $('#note-id').val(noteId ? noteId : '');
-        $('#note-title').val(noteTitle ? noteTitle : '');
-        $('#note-description').val(noteDescription ? noteDescription : '');
+    function showAddNoteModal() {
+        $('#note-id').val('');
+        $('#note-title').val('');
+        $('#note-description').val('');
+        $('#noteModal').removeAttr("data-id");
         $('#noteModal').modal('show');
     }
 
@@ -236,5 +232,6 @@
         $('#credentialModal').modal('show');
     }
 </script>
+<script th:src="@{/js/notes.js}"></script>
 </body>
 </html>
