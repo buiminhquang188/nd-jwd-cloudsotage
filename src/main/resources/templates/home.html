@@ -118,7 +118,10 @@
                                         class="btn edit-button btn-success">
                                     Edit
                                 </button>
-                                <a class="btn btn-danger">Delete</a>
+                                <form class="d-inline" action="#" th:action="@{/note/{id}(id=*{id})}"
+                                      th:method="DELETE">
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
                             </td>
                             <th scope="row" th:text="*{noteTitle}"></th>
                             <td th:text="*{noteDescription}"></td>

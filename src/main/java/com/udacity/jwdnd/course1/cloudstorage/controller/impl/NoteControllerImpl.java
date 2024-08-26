@@ -58,4 +58,16 @@ public class NoteControllerImpl implements NoteController {
         redirectAttributes.addFlashAttribute("tab", TABS.NOTES);
         return "redirect:/home";
     }
+
+    @Override
+    public String deleteNode(Integer id, RedirectAttributes redirectAttributes, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        this.noteService.delete(id, user.getId());
+
+        List<Note> notes = this.noteService.getNotes();
+        redirectAttributes.addFlashAttribute("notes", notes);
+        redirectAttributes.addFlashAttribute("tab", TABS.NOTES);
+
+        return "redirect:/home";
+    }
 }
