@@ -12,4 +12,6 @@ public interface NoteService {
     boolean insert(Note note, int userId);
 
     boolean update(Note note, int userId);
+
+    boolean delete(int noteId, int userId);
 }
