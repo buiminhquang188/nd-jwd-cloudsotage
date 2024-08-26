@@ -1,6 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller.impl;
 
 import com.udacity.jwdnd.course1.cloudstorage.controller.NoteController;
+import com.udacity.jwdnd.course1.cloudstorage.dto.Response;
 import com.udacity.jwdnd.course1.cloudstorage.enums.TABS;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
@@ -51,10 +52,14 @@ public class NoteControllerImpl implements NoteController {
         User user = (User) authentication.getPrincipal();
 
         note.setId(id);
-        this.noteService.update(note, user.getId());
+        Response response = this.noteService.update(note, user.getId());
 
-        List<Note> notes = this.noteService.getNotes();
-        redirectAttributes.addFlashAttribute("notes", notes);
+        if (!response.getIsSuccess()) {
+            redirectAttributes.addFlashAttribute("errorNote", response.getMessage());
+            return "redirect:/home";
+        }
+
+        redirectAttributes.addFlashAttribute("successNote", response.getMessage());
         redirectAttributes.addFlashAttribute("tab", TABS.NOTES);
         return "redirect:/home";
     }
@@ -62,10 +67,14 @@ public class NoteControllerImpl implements NoteController {
     @Override
     public String deleteNode(Integer id, RedirectAttributes redirectAttributes, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        this.noteService.delete(id, user.getId());
+        Response response = this.noteService.delete(id, user.getId());
 
-        List<Note> notes = this.noteService.getNotes();
-        redirectAttributes.addFlashAttribute("notes", notes);
+        if (!response.getIsSuccess()) {
+            redirectAttributes.addFlashAttribute("errorNote", response.getMessage());
+            return "redirect:/home";
+        }
+
+        redirectAttributes.addFlashAttribute("successNote", response.getMessage());
         redirectAttributes.addFlashAttribute("tab", TABS.NOTES);
 
         return "redirect:/home";
