@@ -36,4 +36,9 @@ public class NoteServiceImpl implements NoteService {
         note.setUserId(userId);
         return this.noteMapper.update(note) > 0;
     }
+
+    @Override
+    public boolean delete(int noteId, int userId) {
+        return this.noteMapper.delete(noteId, userId) > 0;
+    }
 }
