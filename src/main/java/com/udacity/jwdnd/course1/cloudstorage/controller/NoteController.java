@@ -15,7 +15,4 @@ public interface NoteController {
 
     @PatchMapping("/note/{id}")
     String updateNote(@PathVariable("id") Integer id, @ModelAttribute Note note, RedirectAttributes redirectAttributes, Authentication authentication);
-
-    @DeleteMapping("/note/{id}")
-    String deleteNode(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes, Authentication authentication);
 }
