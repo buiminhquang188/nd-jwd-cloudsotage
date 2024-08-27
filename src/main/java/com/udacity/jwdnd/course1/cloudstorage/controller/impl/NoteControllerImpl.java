@@ -44,6 +44,7 @@ public class NoteControllerImpl implements NoteController {
 
         List<Note> notes = this.noteService.getNotes();
         redirectAttributes.addFlashAttribute("notes", notes);
+        redirectAttributes.addFlashAttribute("successNote", "Add Successfully");
         return "redirect:/home";
     }
 
