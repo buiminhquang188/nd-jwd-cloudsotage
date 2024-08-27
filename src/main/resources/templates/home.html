@@ -145,7 +145,7 @@
                  role="tabpanel"
                  aria-labelledby="nav-credentials-tab">
                 <button style="margin: 0.25em;" type="button" class="btn btn-info float-right"
-                        onclick="showCredentialModal()">
+                        onclick="showAddCredentialModal()">
                     + Add a New Credential
                 </button>
 
@@ -162,7 +162,8 @@
                         <tbody>
                         <tr th:each="credential : ${credentials}" th:object="${credential}">
                             <td>
-                                <button type="button" class="btn btn-success">Edit</button>
+                                <button th:data-id="*{id}" type="button" class="btn-edit-credential btn btn-success">Edit
+                                </button>
                                 <a class="btn btn-danger">Delete</a>
                             </td>
                             <th scope="row" th:text="*{url}"></th>
@@ -184,7 +185,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form th:action="@{/credential}" action="#" method="POST">
+                                <form id="credential-form" th:action="@{/credential}" action="#" method="POST">
                                     <input type="hidden" name="credentialId" id="credential-id">
                                     <div class="form-group">
                                         <label for="credential-url" class="col-form-label">URL</label>
@@ -234,14 +235,15 @@
     }
 
     // For opening the credentials modal
-    function showCredentialModal(credentialId, url, username, password) {
-        $('#credential-id').val(credentialId ? credentialId : '');
-        $('#credential-url').val(url ? url : '');
-        $('#credential-username').val(username ? username : '');
-        $('#credential-password').val(password ? password : '');
+    function showAddCredentialModal() {
+        $('#credential-id').val('');
+        $('#credential-url').val('');
+        $('#credential-username').val('');
+        $('#credential-password').val('');
         $('#credentialModal').modal('show');
     }
 </script>
 <script th:src="@{/js/notes.js}"></script>
+<script th:src="@{/js/credentials.js}"></script>
 </body>
 </html>

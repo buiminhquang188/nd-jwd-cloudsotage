@@ -13,11 +13,11 @@ import java.util.List;
 @Service
 public class CredentialServiceImpl implements CredentialService {
     private final CredentialMapper credentialMapper;
-    private final HashService hashService;
+    private final EncryptionService encryptionService;
 
-    public CredentialServiceImpl(CredentialMapper credentialMapper, HashService hashService) {
+    public CredentialServiceImpl(CredentialMapper credentialMapper, EncryptionService encryptionService) {
         this.credentialMapper = credentialMapper;
-        this.hashService = hashService;
+        this.encryptionService = encryptionService;
     }
 
     @Override
@@ -27,20 +27,26 @@ public class CredentialServiceImpl implements CredentialService {
 
     @Override
     public Credential getCredential(int credentialId, int userId) {
-        return this.credentialMapper.getCredential(credentialId, userId);
+        Credential credential = this.credentialMapper.getCredential(credentialId, userId);
+        String credentialPassword = this.encryptionService.decryptValue(credential.getPassword(), credential.getKey());
+        credential.setPassword(credentialPassword);
+
+        return credential;
     }
 
     @Override
     public boolean insert(Credential credential, int userId) {
         credential.setUserId(userId);
 
-        SecureRandom secureRandom = new SecureRandom();
-        byte[] salt = new byte[16];
-        secureRandom.nextBytes(salt);
-        String encodeSalt = Base64.getEncoder()
-                .encodeToString(salt);
-        String hashedPassword = this.hashService.getHashedValue(credential.getPassword(), encodeSalt);
-        credential.setPassword(hashedPassword);
+        SecureRandom random = new SecureRandom();
+        byte[] key = new byte[16];
+        random.nextBytes(key);
+        String encodedKey = Base64.getEncoder()
+                .encodeToString(key);
+        String encryptedPassword = this.encryptionService.encryptValue(credential.getPassword(), encodedKey);
+
+        credential.setPassword(encryptedPassword);
+        credential.setKey(encodedKey);
 
         return this.credentialMapper.insert(credential) > 0;
     }
