@@ -173,7 +173,10 @@
                                 <button th:data-id="*{id}" type="button" class="btn-edit-credential btn btn-success">
                                     Edit
                                 </button>
-                                <a class="btn btn-danger">Delete</a>
+                                <form class="d-inline" action="#" th:action="@{/credential/{id}(id=*{id})}"
+                                      th:method="DELETE">
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
                             </td>
                             <th scope="row" th:text="*{url}"></th>
                             <td th:text="*{username}"></td>
