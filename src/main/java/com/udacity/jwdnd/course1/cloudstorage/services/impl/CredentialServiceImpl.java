@@ -59,6 +59,10 @@ public class CredentialServiceImpl implements CredentialService {
         }
 
         credential.setUserId(userId);
+        credential.setKey(currentCredential.getKey());
+        String encryptedPassword = this.encryptionService.encryptValue(credential.getPassword(), credential.getKey());
+        credential.setPassword(encryptedPassword);
+
         int resultIndex = this.credentialMapper.update(credential);
         if (resultIndex < 0) {
             return new Response("There was an error when updating note, please try again", false);

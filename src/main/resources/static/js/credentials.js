@@ -12,14 +12,13 @@ $(function () {
 $(function () {
     const editCredentialButton = $('button.btn.btn-edit-credential');
     const credentialModal = $("#credentialModal");
-    const credentialNoteForm = $("#credential-form");
+    const credentialForm = $("#credential-form");
 
     editCredentialButton.click(async function () {
         credentialModal.modal("show");
 
         const id = $(this).data("id");
         const credential = await fetchDetail(id);
-        console.log({id, credential})
 
         if (credential.statusCode === 404) {
             $("#credentialModal .modal-body").prepend(
@@ -35,20 +34,20 @@ $(function () {
         credentialModal.attr("data-id", id);
     });
 
-    // modal.on("shown.bs.modal", function (e) {
-    //     const id = modal.attr("data-id");
-    //     if (!Number(id)) return;
-    //
-    //     $("button#btn-note-submit").text("Edit changes");
-    //
-    //     if (!noteForm) return;
-    //     noteForm.prepend("<input type='hidden' name='_method' value='PATCH'/>")
-    //     noteForm.attr("action", `/note/${id}`);
-    // });
-    //
-    // modal.on("hidden.bs.modal", function (e) {
-    //     $("#note-form input").first().remove();
-    // })
+    credentialModal.on("shown.bs.modal", function (e) {
+        const id = credentialModal.attr("data-id");
+        if (!Number(id)) return;
+
+        $("button#btn-note-submit").text("Edit changes");
+
+        if (!credentialForm) return;
+        credentialForm.prepend("<input type='hidden' name='_method' value='PATCH'/>")
+        credentialForm.attr("action", `/credential/${id}`);
+    });
+
+    credentialModal.on("hidden.bs.modal", function (e) {
+        $("#note-form input").first().remove();
+    })
 })
 
 async function fetchDetail(id) {
