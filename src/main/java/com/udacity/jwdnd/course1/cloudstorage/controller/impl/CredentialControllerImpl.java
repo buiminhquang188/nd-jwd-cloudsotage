@@ -53,6 +53,17 @@ public class CredentialControllerImpl implements CredentialController {
 
     @Override
     public String deleteCredential(Integer id, RedirectAttributes redirectAttributes, Authentication authentication) {
-        return "";
+        User user = (User) authentication.getPrincipal();
+        Response response = this.credentialService.delete(id, user.getId());
+
+        if (!response.getIsSuccess()) {
+            redirectAttributes.addFlashAttribute("errorCredential", response.getMessage());
+            return "redirect:/home";
+        }
+
+        redirectAttributes.addFlashAttribute("successCredential", response.getMessage());
+        redirectAttributes.addFlashAttribute("tab", TABS.CREDENTIALS);
+
+        return "redirect:/home";
     }
 }

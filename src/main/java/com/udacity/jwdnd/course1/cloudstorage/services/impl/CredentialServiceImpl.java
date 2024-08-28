@@ -89,7 +89,7 @@ public class CredentialServiceImpl implements CredentialService {
         }
 
         return new Response(
-                "Update Successfully",
+                "Delete Successfully",
                 true
         );
     }
