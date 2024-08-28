@@ -144,6 +144,14 @@
                  id="nav-credentials"
                  role="tabpanel"
                  aria-labelledby="nav-credentials-tab">
+                <div class="col-sm-12 mt-2" th:if="${errorCredential}">
+                    <div class="alert alert-danger" th:text="${errorCredential}">
+                    </div>
+                </div>
+                <div class="col-sm-12 mt-2" th:if="${successCredential}">
+                    <div class="alert alert-success" th:text="${successCredential}">
+                    </div>
+                </div>
                 <button style="margin: 0.25em;" type="button" class="btn btn-info float-right"
                         onclick="showAddCredentialModal()">
                     + Add a New Credential
@@ -162,7 +170,8 @@
                         <tbody>
                         <tr th:each="credential : ${credentials}" th:object="${credential}">
                             <td>
-                                <button th:data-id="*{id}" type="button" class="btn-edit-credential btn btn-success">Edit
+                                <button th:data-id="*{id}" type="button" class="btn-edit-credential btn btn-success">
+                                    Edit
                                 </button>
                                 <a class="btn btn-danger">Delete</a>
                             </td>
