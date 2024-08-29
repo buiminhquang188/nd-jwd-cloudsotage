@@ -38,9 +38,3 @@ CREATE TABLE IF NOT EXISTS CREDENTIALS
     userid       INT,
     foreign key (userid) references USERS (userid)
 );
-
-
-INSERT INTO USERS(username, salt, password, firstname, lastname)
-VALUES ('quang', 'ao+njZPy8EgLeloW1dUblw==',
-        'W8o0EOVZg6njYS/saJjZy8pThdR5PgAcHM9wmFmEzaUpW7Q4EbVt1hxExIKMydDBNXO4nC4MnvSPX7UZ37PB7Jw+o1pwVzkc/Zyk75ifC//VjD1SVmYA5IL6jEUwawLDDZQ5u2fT3mg4vgAWQ9PvZoFOG15ZqdmzYH/5V3U8RRfZIX2Fpdtp8uKeKw9FDci6YV193UcEh3EBQyNOC0NF1hIB83Ufcps9EiDJMeVLK6Ss2kLi8e9bw9F+tW9DH44GBMFoTa34MDX+CBOx6w4Lu30thVxn6kGhmv08EiphzwS+zrR/a02HxS5Jv9mKz323zqlKS+cP9Q8wjrm7i6lRpg==',
-        'quang', 'quang');
