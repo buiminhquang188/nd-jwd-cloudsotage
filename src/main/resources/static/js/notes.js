@@ -20,7 +20,7 @@ $(function () {
         modal.modal("show");
 
         const id = $(this).data("id");
-        const note = await fetchDetail(id);
+        const note = await fetchDetailNote(id);
 
         if (note.statusCode === 404) {
             $("#noteModal .modal-body").prepend(
@@ -51,6 +51,6 @@ $(function () {
     })
 })
 
-async function fetchDetail(id) {
+async function fetchDetailNote(id) {
     return (await fetch(`http://localhost:8080/note/${id}`, {method: "GET"})).json()
 };
