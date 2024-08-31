@@ -10,8 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
 import java.time.Duration;
+import java.util.List;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, properties = {"server.port=8080"})
 class CloudStorageApplicationTests extends WebDriverConfig {
     @Test
     public void getLoginPage() {
@@ -187,11 +188,22 @@ class CloudStorageApplicationTests extends WebDriverConfig {
         WebElement uploadButton = this.getDriver()
                 .findElement(By.id("uploadButton"));
         uploadButton.click();
+
+        this.getDriver()
+                .get("http://localhost:" + this.getPort() + "/home");
+
         try {
-            webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("success")));
+            webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("fileTable")));
         } catch (org.openqa.selenium.TimeoutException e) {
             System.out.println("Large File upload failed");
         }
+
+        WebElement fileTable = this.getDriver()
+                .findElement(By.id("fileTable"));
+        WebElement tableBody = fileTable.findElement(By.tagName("tbody"));
+        List<WebElement> tableData = tableBody.findElements(By.tagName("td"));
+
+        Assertions.assertTrue(tableData.isEmpty());
         Assertions.assertFalse(this.getDriver()
                 .getPageSource()
                 .contains("HTTP Status 403 – Forbidden"));
