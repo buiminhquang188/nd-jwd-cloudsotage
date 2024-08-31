@@ -21,8 +21,8 @@ public class CredentialServiceImpl implements CredentialService {
     }
 
     @Override
-    public List<Credential> getCredentials() {
-        return this.credentialMapper.getCredentials();
+    public List<Credential> getCredentials(int userId) {
+        return this.credentialMapper.getCredentials(userId);
     }
 
     @Override

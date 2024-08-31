@@ -7,9 +7,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequestMapping
 public interface NoteController {
-    @GetMapping("/notes")
-    String getNotes(RedirectAttributes redirectAttributes);
-
     @PostMapping("/note")
     String addNotes(@ModelAttribute Note note, RedirectAttributes redirectAttributes, Authentication authentication);
 

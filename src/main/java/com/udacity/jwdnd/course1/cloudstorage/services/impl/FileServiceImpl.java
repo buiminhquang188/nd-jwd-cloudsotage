@@ -19,27 +19,27 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public boolean upload(MultipartFile multipartFile, Integer userId) {
-        try {
-            File file = new File(
-                    null,
-                    multipartFile.getOriginalFilename(),
-                    multipartFile.getContentType(),
-                    String.valueOf(multipartFile.getSize()),
-                    userId,
-                    multipartFile.getInputStream()
-                            .readAllBytes()
-            );
+    public boolean upload(MultipartFile multipartFile, Integer userId) throws IOException {
+        File file = new File(
+                null,
+                multipartFile.getOriginalFilename(),
+                multipartFile.getContentType(),
+                String.valueOf(multipartFile.getSize()),
+                userId,
+                multipartFile.getInputStream()
+                        .readAllBytes());
 
-            return this.fileMapper.insert(file) > 0;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return this.fileMapper.insert(file) > 0;
     }
 
     @Override
     public File getFile(Integer fileId, Integer userId) {
         return this.fileMapper.getFile(fileId, userId);
+    }
+
+    @Override
+    public File getFilename(String fileName, int userId) {
+        return this.fileMapper.getFileByFilename(fileName, userId);
     }
 
     @Override

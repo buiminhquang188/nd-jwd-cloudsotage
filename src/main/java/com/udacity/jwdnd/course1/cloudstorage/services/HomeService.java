@@ -5,5 +5,5 @@ import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import java.util.List;
 
 public interface HomeService {
-    List<File> getFiles();
+    List<File> getFiles(int userId);
 }

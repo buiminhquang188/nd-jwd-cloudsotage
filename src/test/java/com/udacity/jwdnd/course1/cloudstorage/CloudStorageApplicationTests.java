@@ -126,10 +126,6 @@ class CloudStorageApplicationTests extends WebDriverConfig {
         // Create a test account
         doMockSignUp("Redirection", "Test", "RT", "123");
 
-        WebElement anchorLogin = this.getDriver()
-                .findElement(By.id("login-page"));
-        anchorLogin.click();
-
         // Check if we have been redirected to the log in page.
         Assertions.assertEquals("http://localhost:" + this.getPort() + "/login", this.getDriver()
                 .getCurrentUrl());
