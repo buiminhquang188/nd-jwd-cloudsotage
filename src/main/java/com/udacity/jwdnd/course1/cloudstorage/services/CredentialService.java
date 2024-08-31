@@ -6,7 +6,7 @@ import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
 import java.util.List;
 
 public interface CredentialService {
-    List<Credential> getCredentials();
+    List<Credential> getCredentials(int userId);
 
     Credential getCredential(int credentialId, int userId);
 

@@ -3,6 +3,7 @@ package com.udacity.jwdnd.course1.cloudstorage.controller.impl;
 import com.udacity.jwdnd.course1.cloudstorage.controller.FileController;
 import com.udacity.jwdnd.course1.cloudstorage.dto.Response;
 import com.udacity.jwdnd.course1.cloudstorage.dto.ResponseDownload;
+import com.udacity.jwdnd.course1.cloudstorage.enums.FILE;
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+
 @Controller
 public class FileControllerImpl implements FileController {
     private final FileService fileService;
@@ -25,24 +28,31 @@ public class FileControllerImpl implements FileController {
 
     @Override
     public String upload(MultipartFile multipartFile, RedirectAttributes redirectAttributes, Authentication authentication) {
-        String error = null;
         if (multipartFile.isEmpty()) {
-            error = "Please choose file before hit upload button";
-            redirectAttributes.addFlashAttribute("error", error);
+            redirectAttributes.addFlashAttribute(FILE.MISSING_ERROR.getVariable(), FILE.MISSING_ERROR.getMessage());
+            return "redirect:/home";
+        }
+
+        if (multipartFile.getSize() >= 5e+6) {
+            redirectAttributes.addFlashAttribute(FILE.MAXIMUM_SIZE_ERROR.getVariable(), FILE.MAXIMUM_SIZE_ERROR.getMessage());
             return "redirect:/home";
         }
 
         User user = (User) authentication.getPrincipal();
-        boolean isUploaded = this.fileService.upload(multipartFile, user.getId());
+        try {
+            File file = this.fileService.getFilename(multipartFile.getOriginalFilename(), user.getId());
+            if (file != null) {
+                redirectAttributes.addFlashAttribute(FILE.DUPLICATE_NAME_ERROR.getVariable(), FILE.DUPLICATE_NAME_ERROR.getMessage());
+                return "redirect:/home";
+            }
 
-        if (!isUploaded) {
-            error = "There was an error during upload file, please try again";
-            redirectAttributes.addFlashAttribute("error", error);
+            this.fileService.upload(multipartFile, user.getId());
+        } catch (IOException e) {
+            redirectAttributes.addFlashAttribute(FILE.IO_ERROR.getVariable(), FILE.IO_ERROR.getMessage());
             return "redirect:/home";
         }
 
-        String success = "Upload successfully";
-        redirectAttributes.addFlashAttribute("success", success);
+        redirectAttributes.addFlashAttribute(FILE.UPLOAD_SUCCESS.getVariable(), FILE.UPLOAD_SUCCESS.getMessage());
         return "redirect:/home";
     }
 

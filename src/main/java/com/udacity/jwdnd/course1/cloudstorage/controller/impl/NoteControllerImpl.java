@@ -21,13 +21,6 @@ public class NoteControllerImpl implements NoteController {
     }
 
     @Override
-    public String getNotes(RedirectAttributes redirectAttributes) {
-        List<Note> notes = this.noteService.getNotes();
-        redirectAttributes.addFlashAttribute("notes", notes);
-        return "home";
-    }
-
-    @Override
     public String addNotes(Note note, RedirectAttributes redirectAttributes, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         boolean isInserted = this.noteService.insert(note, user.getId());
@@ -42,7 +35,7 @@ public class NoteControllerImpl implements NoteController {
         }
 
 
-        List<Note> notes = this.noteService.getNotes();
+        List<Note> notes = this.noteService.getNotes(user.getId());
         redirectAttributes.addFlashAttribute("notes", notes);
         redirectAttributes.addFlashAttribute("successNote", "Add Successfully");
         return "redirect:/home";

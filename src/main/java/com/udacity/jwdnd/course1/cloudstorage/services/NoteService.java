@@ -6,7 +6,7 @@ import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import java.util.List;
 
 public interface NoteService {
-    List<Note> getNotes();
+    List<Note> getNotes(int userId);
 
     Note getNote(Integer id, Integer userId);
 

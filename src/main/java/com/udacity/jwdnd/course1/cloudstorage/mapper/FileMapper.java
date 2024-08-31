@@ -10,11 +10,14 @@ import java.util.List;
 
 @Mapper
 public interface FileMapper {
-    @Select("SELECT * FROM FILES")
-    List<File> getFiles();
+    @Select("SELECT * FROM FILES F WHERE F.userid = #{userId}")
+    List<File> getFiles(int userId);
 
     @Select("SELECT * FROM FILES F WHERE F.fileId = #{fileId} AND F.userid = #{userId}")
     File getFile(Integer fileId, Integer userId);
+
+    @Select("SELECT * FROM FILES F WHERE F.filename = #{fileName} AND F.userid = #{userId}")
+    File getFileByFilename(String fileName, int userId);
 
     @Insert("INSERT INTO FILES(filename, contenttype, filesize, filedata, userid) VALUES (#{fileName}, #{contentType}, #{fileSize}, #{fileData}, #{userId})")
     int insert(File file);

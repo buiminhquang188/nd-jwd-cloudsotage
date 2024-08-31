@@ -16,7 +16,7 @@ public class HomeServiceImpl implements HomeService {
     }
 
     @Override
-    public List<File> getFiles() {
-        return this.fileMapper.getFiles();
+    public List<File> getFiles(int userId) {
+        return this.fileMapper.getFiles(userId);
     }
 }

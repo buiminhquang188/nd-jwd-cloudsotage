@@ -17,8 +17,8 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public List<Note> getNotes() {
-        return this.noteMapper.getNotes();
+    public List<Note> getNotes(int userId) {
+        return this.noteMapper.getNotes(userId);
     }
 
     @Override

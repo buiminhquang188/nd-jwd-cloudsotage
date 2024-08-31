@@ -5,6 +5,7 @@ import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class SignupControllerImpl implements SignupController {
@@ -20,7 +21,7 @@ public class SignupControllerImpl implements SignupController {
     }
 
     @Override
-    public String signupUser(User user, Model model) {
+    public String signupUser(User user, Model model, RedirectAttributes redirectAttributes) {
         String signupError = null;
 
         if (this.userService.isUsernameAvailable(user.getUsername())) {
@@ -40,7 +41,7 @@ public class SignupControllerImpl implements SignupController {
             return "signup";
         }
 
-        model.addAttribute("signupSuccess", true);
-        return "signup";
+        redirectAttributes.addFlashAttribute("signupSuccess", true);
+        return "redirect:/login";
     }
 }
