@@ -1,6 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller.impl;
 
 import com.udacity.jwdnd.course1.cloudstorage.controller.SignupController;
+import com.udacity.jwdnd.course1.cloudstorage.enums.SIGNUP;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.stereotype.Controller;
@@ -25,14 +26,16 @@ public class SignupControllerImpl implements SignupController {
         String signupError = null;
 
         if (this.userService.isUsernameAvailable(user.getUsername())) {
-            signupError = "The username is already exists.";
+            signupError = SIGNUP.USER_EXIST_ERROR.getObject()
+                    .toString();
         }
 
         if (signupError == null) {
             boolean isAdded = this.userService.createUser(user);
 
             if (!isAdded) {
-                signupError = "There was an error signing you up. Please try again.";
+                signupError = SIGNUP.INTERNAL_ERROR.getObject()
+                        .toString();
             }
         }
 
@@ -41,7 +44,7 @@ public class SignupControllerImpl implements SignupController {
             return "signup";
         }
 
-        redirectAttributes.addFlashAttribute("signupSuccess", true);
+        redirectAttributes.addFlashAttribute("signupSuccess", SIGNUP.SUCCESS.getObject());
         return "redirect:/login";
     }
 }
