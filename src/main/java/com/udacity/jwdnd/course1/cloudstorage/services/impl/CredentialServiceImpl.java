@@ -1,6 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.services.impl;
 
 import com.udacity.jwdnd.course1.cloudstorage.dto.Response;
+import com.udacity.jwdnd.course1.cloudstorage.enums.CREDENTIAL;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.CredentialMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
@@ -55,7 +56,7 @@ public class CredentialServiceImpl implements CredentialService {
     public Response update(Credential credential, int userId) {
         Credential currentCredential = this.getCredential(credential.getId(), userId);
         if (currentCredential == null) {
-            return new Response("Credential not found, please try again", false);
+            return new Response(CREDENTIAL.NOT_FOUND_ERROR.getMessage(), false);
         }
 
         credential.setUserId(userId);
@@ -65,11 +66,11 @@ public class CredentialServiceImpl implements CredentialService {
 
         int resultIndex = this.credentialMapper.update(credential);
         if (resultIndex < 0) {
-            return new Response("There was an error when updating note, please try again", false);
+            return new Response(CREDENTIAL.UPDATE_INTERNAL_ERROR.getMessage(), false);
         }
 
         return new Response(
-                "Update Successfully",
+                CREDENTIAL.UPDATE_SUCCESS.getMessage(),
                 true
         );
     }
@@ -79,17 +80,17 @@ public class CredentialServiceImpl implements CredentialService {
         Credential credential = this.getCredential(credentialId, userId);
 
         if (credential == null) {
-            return new Response("Credential not found, please try again", false);
+            return new Response(CREDENTIAL.NOT_FOUND_ERROR.getMessage(), false);
         }
 
         credential.setUserId(userId);
         int resultIndex = this.credentialMapper.delete(credentialId, userId);
         if (resultIndex < 0) {
-            return new Response("There was an error when updating note, please try again", false);
+            return new Response(CREDENTIAL.DELETE_INTERNAL_ERROR.getMessage(), false);
         }
 
         return new Response(
-                "Delete Successfully",
+                CREDENTIAL.DELETE_SUCCESS.getMessage(),
                 true
         );
     }
