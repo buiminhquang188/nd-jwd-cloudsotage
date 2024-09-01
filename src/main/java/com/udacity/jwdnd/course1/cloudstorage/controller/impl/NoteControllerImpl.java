@@ -2,6 +2,7 @@ package com.udacity.jwdnd.course1.cloudstorage.controller.impl;
 
 import com.udacity.jwdnd.course1.cloudstorage.controller.NoteController;
 import com.udacity.jwdnd.course1.cloudstorage.dto.Response;
+import com.udacity.jwdnd.course1.cloudstorage.enums.NOTE;
 import com.udacity.jwdnd.course1.cloudstorage.enums.TABS;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
@@ -28,8 +29,7 @@ public class NoteControllerImpl implements NoteController {
         redirectAttributes.addFlashAttribute("tab", TABS.NOTES);
 
         if (!isInserted) {
-            String error = "There was an error during create note, please try again.";
-            redirectAttributes.addFlashAttribute("errorNotes", error);
+            redirectAttributes.addFlashAttribute(NOTE.CREATE_INTERNAL_ERROR.getVariable(), NOTE.CREATE_INTERNAL_ERROR.getMessage());
             redirectAttributes.addFlashAttribute("note", note);
             return "redirect:/home";
         }
@@ -37,7 +37,7 @@ public class NoteControllerImpl implements NoteController {
 
         List<Note> notes = this.noteService.getNotes(user.getId());
         redirectAttributes.addFlashAttribute("notes", notes);
-        redirectAttributes.addFlashAttribute("successNote", "Add Successfully");
+        redirectAttributes.addFlashAttribute(NOTE.CREATE_SUCCESS.getVariable(), NOTE.CREATE_SUCCESS.getMessage());
         return "redirect:/home";
     }
 

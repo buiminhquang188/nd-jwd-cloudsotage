@@ -1,6 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.services.impl;
 
 import com.udacity.jwdnd.course1.cloudstorage.dto.Response;
+import com.udacity.jwdnd.course1.cloudstorage.enums.NOTE;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.NoteMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
@@ -36,18 +37,18 @@ public class NoteServiceImpl implements NoteService {
     public Response update(Note note, int userId) {
         Note currentNote = this.getNote(note.getId(), userId);
         if (currentNote == null) {
-            return new Response("Note not found, please try again", false);
+            return new Response(NOTE.NOT_FOUND_ERROR.getMessage(), false);
         }
 
         note.setUserId(userId);
         int resultIndex = this.noteMapper.update(note);
 
         if (resultIndex < 0) {
-            return new Response("There was an error when updating note, please try again", false);
+            return new Response(NOTE.UPDATE_INTERNAL_ERROR.getMessage(), false);
         }
 
         return new Response(
-                "Update Successfully",
+                NOTE.UPDATE_SUCCESS.getMessage(),
                 true
         );
     }
@@ -56,16 +57,16 @@ public class NoteServiceImpl implements NoteService {
     public Response delete(int noteId, int userId) {
         Note note = this.getNote(noteId, userId);
         if (note == null) {
-            return new Response("Note not found, please try again", false);
+            return new Response(NOTE.NOT_FOUND_ERROR.getMessage(), false);
         }
 
         int resultIndex = this.noteMapper.delete(noteId, userId);
         if (resultIndex < 0) {
-            return new Response("There was an error when deleting note, please try again", false);
+            return new Response(NOTE.DELETE_INTERNAL_ERROR.getMessage(), false);
         }
 
         return new Response(
-                "Delete Successfully",
+                NOTE.DELETE_SUCCESS.getMessage(),
                 true
         );
     }
