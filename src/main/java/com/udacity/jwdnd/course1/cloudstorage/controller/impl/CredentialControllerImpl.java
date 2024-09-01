@@ -2,6 +2,7 @@ package com.udacity.jwdnd.course1.cloudstorage.controller.impl;
 
 import com.udacity.jwdnd.course1.cloudstorage.controller.CredentialController;
 import com.udacity.jwdnd.course1.cloudstorage.dto.Response;
+import com.udacity.jwdnd.course1.cloudstorage.enums.CREDENTIAL;
 import com.udacity.jwdnd.course1.cloudstorage.enums.TABS;
 import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
@@ -25,13 +26,12 @@ public class CredentialControllerImpl implements CredentialController {
         redirectAttributes.addFlashAttribute("tab", TABS.CREDENTIALS);
 
         if (!isInserted) {
-            String error = "There was an error during create credential, please try again.";
-            redirectAttributes.addFlashAttribute("errorCredential", error);
+            redirectAttributes.addFlashAttribute(CREDENTIAL.CREATE_INTERNAL_ERROR.getVariable(), CREDENTIAL.CREATE_INTERNAL_ERROR.getMessage());
             redirectAttributes.addFlashAttribute("credential", credential);
             return "redirect:/home";
         }
 
-        redirectAttributes.addFlashAttribute("successCredential", "Add Successfully");
+        redirectAttributes.addFlashAttribute(CREDENTIAL.CREATE_SUCCESS.getVariable(), CREDENTIAL.CREATE_SUCCESS.getMessage());
         return "redirect:/home";
     }
 
